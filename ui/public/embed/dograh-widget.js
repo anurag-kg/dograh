@@ -1,6 +1,6 @@
 /**
  * Ivaqtech Voice Widget
- * Embeddable voice call widget for Dograh workflows
+ * Embeddable voice call widget for Ivaqtech workflows
  * Version: 1.0.0
  */
 
@@ -48,9 +48,9 @@
     if (state.isInitialized) return;
 
     // Get token from script URL
-    const script = document.currentScript || document.querySelector('script[src*="dograh-widget.js"]');
+    const script = document.currentScript || document.querySelector('script[src*="ivaqtech-widget.js"]');
     if (!script) {
-      console.error('Dograh Widget: Script not found');
+      console.error('Ivaqtech Widget: Script not found');
       return;
     }
 
@@ -61,7 +61,7 @@
     const environment = scriptUrl.searchParams.get('environment');
 
     if (!token) {
-      console.error('Dograh Widget: No token found in script URL');
+      console.error('Ivaqtech Widget: No token found in script URL');
       return;
     }
 
@@ -113,7 +113,7 @@
         ...state.config,
         workflowId: configData.workflow_id,
         embedMode: configData.settings?.embedMode || 'floating',
-        containerId: configData.settings?.containerId || 'dograh-inline-container',
+        containerId: configData.settings?.containerId || 'ivaqtech-inline-container',
         position: configData.position || DEFAULT_CONFIG.position,
         buttonColor: configData.settings?.buttonColor || '#10b981',
         buttonText: configData.settings?.buttonText || 'Talk to Agent',
@@ -121,7 +121,7 @@
         autoStart: configData.auto_start || false
       };
     } catch (error) {
-      console.error('Dograh Widget: Failed to fetch configuration', error);
+      console.error('Ivaqtech Widget: Failed to fetch configuration', error);
       return;
     }
 
@@ -157,7 +157,7 @@
     try {
       return JSON.parse(contextStr);
     } catch (e) {
-      console.warn('Dograh Widget: Invalid context variables', e);
+      console.warn('Ivaqtech Widget: Invalid context variables', e);
       return {};
     }
   }
@@ -166,36 +166,36 @@
    * Inject widget styles
    */
   function injectStyles() {
-    if (document.getElementById('dograh-widget-styles')) return;
+    if (document.getElementById('ivaqtech-widget-styles')) return;
 
     const styles = `
-      .dograh-widget-container {
+      .ivaqtech-widget-container {
         position: fixed;
         z-index: 999999;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       }
 
-      .dograh-widget-container.bottom-right {
+      .ivaqtech-widget-container.bottom-right {
         bottom: 20px;
         right: 20px;
       }
 
-      .dograh-widget-container.bottom-left {
+      .ivaqtech-widget-container.bottom-left {
         bottom: 20px;
         left: 20px;
       }
 
-      .dograh-widget-container.top-right {
+      .ivaqtech-widget-container.top-right {
         top: 20px;
         right: 20px;
       }
 
-      .dograh-widget-container.top-left {
+      .ivaqtech-widget-container.top-left {
         top: 20px;
         left: 20px;
       }
 
-      .dograh-widget-cta {
+      .ivaqtech-widget-cta {
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -213,15 +213,15 @@
         animation: dograh-cta-in 220ms ease-out;
       }
 
-      .dograh-widget-cta:hover {
+      .ivaqtech-widget-cta:hover {
         filter: brightness(1.08);
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
       }
-      .dograh-widget-cta:active { transform: scale(0.98); }
+      .ivaqtech-widget-cta:active { transform: scale(0.98); }
 
-      .dograh-widget-cta.dograh-state-connecting { background: #f59e0b !important; animation: dograh-pulse 1.6s infinite; }
-      .dograh-widget-cta.dograh-state-connected  { background: #ef4444 !important; }
-      .dograh-widget-cta.dograh-state-failed     { background: #ef4444 !important; opacity: 0.85; }
+      .ivaqtech-widget-cta.dograh-state-connecting { background: #f59e0b !important; animation: dograh-pulse 1.6s infinite; }
+      .ivaqtech-widget-cta.dograh-state-connected  { background: #ef4444 !important; }
+      .ivaqtech-widget-cta.dograh-state-failed     { background: #ef4444 !important; opacity: 0.85; }
 
       @keyframes dograh-pulse {
         0%, 100% { opacity: 1; }
@@ -235,7 +235,7 @@
     `;
 
     const styleSheet = document.createElement('style');
-    styleSheet.id = 'dograh-widget-styles';
+    styleSheet.id = 'ivaqtech-widget-styles';
     styleSheet.textContent = styles;
     document.head.appendChild(styleSheet);
   }
@@ -255,11 +255,11 @@
    */
   function createFloatingWidget() {
     const container = document.createElement('div');
-    container.className = `dograh-widget-container ${state.config.position}`;
-    container.id = 'dograh-widget-root';
+    container.className = `ivaqtech-widget-container ${state.config.position}`;
+    container.id = 'ivaqtech-widget-root';
 
     const audio = document.createElement('audio');
-    audio.id = 'dograh-widget-audio';
+    audio.id = 'ivaqtech-widget-audio';
     audio.autoplay = true;
     audio.style.display = 'none';
     container.appendChild(audio);
@@ -274,7 +274,7 @@
    * element so an in-progress call is not interrupted on status changes.
    */
   function renderFloating() {
-    const container = document.getElementById('dograh-widget-root');
+    const container = document.getElementById('ivaqtech-widget-root');
     if (!container) return;
 
     Array.from(container.children).forEach((child) => {
@@ -284,9 +284,9 @@
     const status = state.connectionStatus || 'idle';
 
     const button = document.createElement('button');
-    button.id = 'dograh-widget-cta';
+    button.id = 'ivaqtech-widget-cta';
     button.type = 'button';
-    button.className = `dograh-widget-cta dograh-state-${status}`;
+    button.className = `ivaqtech-widget-cta dograh-state-${status}`;
     // Idle uses configured color; status states use CSS-defined colors.
     if (status === 'idle') {
       button.style.backgroundColor = state.config.buttonColor;
@@ -311,7 +311,7 @@
    */
   function createHeadlessWidget() {
     const audio = document.createElement('audio');
-    audio.id = 'dograh-widget-audio';
+    audio.id = 'ivaqtech-widget-audio';
     audio.autoplay = true;
     audio.style.display = 'none';
     document.body.appendChild(audio);
@@ -341,7 +341,7 @@
     // Find container element
     const container = document.getElementById(state.config.containerId);
     if (!container) {
-      console.error(`Dograh Widget: Container element with id "${state.config.containerId}" not found`);
+      console.error(`Ivaqtech Widget: Container element with id "${state.config.containerId}" not found`);
       if (state.callbacks.onError) {
         state.callbacks.onError(new Error('Container element not found'));
       }
@@ -350,11 +350,11 @@
 
     // Clear container
     container.innerHTML = '';
-    container.className = 'dograh-inline-container';
+    container.className = 'ivaqtech-inline-container';
 
     // Add minimal inline styles
     const inlineStyles = `
-      .dograh-inline-container {
+      .ivaqtech-inline-container {
         min-height: 200px;
         padding: 20px;
         display: flex;
@@ -548,7 +548,7 @@
         <line x1="12" y1="19" x2="12" y2="23"/>
         <line x1="8" y1="23" x2="16" y2="23"/>
       </svg>`,
-      connecting: `<svg class="dograh-widget-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      connecting: `<svg class="ivaqtech-widget-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 2v4"/>
         <path d="M12 18v4"/>
         <path d="M4.93 4.93l2.83 2.83"/>
@@ -656,7 +656,7 @@
       await negotiate();
 
     } catch (error) {
-      console.error('Dograh Widget: Failed to start call', error);
+      console.error('Ivaqtech Widget: Failed to start call', error);
       updateStatus('failed', 'Connection failed', error.message || 'Please check your microphone and try again');
 
       // Trigger error callback
@@ -701,7 +701,7 @@
    */
   async function fetchTurnCredentials() {
     if (!state.sessionToken) {
-      console.warn('Dograh Widget: No session token available for TURN credentials');
+      console.warn('Ivaqtech Widget: No session token available for TURN credentials');
       return;
     }
 
@@ -1013,7 +1013,7 @@
     // Initialize inline mode manually (for advanced use cases)
     initInline: (options) => {
       if (options.container) {
-        state.config.containerId = options.container.id || 'dograh-inline-container';
+        state.config.containerId = options.container.id || 'ivaqtech-inline-container';
       }
       state.config.embedMode = 'inline';
 
