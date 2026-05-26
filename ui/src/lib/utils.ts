@@ -115,8 +115,8 @@ export function setStackRefreshCookie(refreshToken: string) {
   const expiryDate = new Date();
   expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
-  const isDograhDomain = window.location.hostname.endsWith('.dograh.com');
-  const cookieDomainPart = isDograhDomain ? '; domain=.dograh.com' : '';
+  const isIvaqtechDomain = window.location.hostname.endsWith('.ivaqtech.com');
+  const cookieDomainPart = isIvaqtechDomain ? '; domain=.ivaqtech.com' : '';
 
   document.cookie =
     `stack-refresh-${process.env.NEXT_PUBLIC_STACK_PROJECT_ID}=${refreshToken}; ` +
@@ -171,13 +171,13 @@ export async function impersonateAsSuperadmin(params: {
   // ---------------------------------------------------------------------------------
   // Instead of setting the cookie here (which would also affect the superadmin
   // sub-domain), redirect the browser to the dedicated impersonation helper route
-  // (served from the target sub-domain, e.g. app.dograh.com). The route will set the
+  // (served from the target sub-domain, e.g. app.ivaqtech.com). The route will set the
   // cookie for the *current* sub-domain only and then forward the user to the final
   // destination.
   // ---------------------------------------------------------------------------------
 
   // Determine the base URL that should handle the impersonation cookie. If we are on
-  // superadmin.dograh.com we want to switch to app.dograh.com. For any other domain
+  // superadmin.ivaqtech.com we want to switch to app.ivaqtech.com. For any other domain
   // (e.g. localhost, staging, or already on the app) we just keep the same origin.
   const appBaseUrl = window.location.origin.includes('superadmin.')
     ? window.location.origin.replace('superadmin.', 'app.')

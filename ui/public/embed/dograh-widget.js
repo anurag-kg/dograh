@@ -1,5 +1,5 @@
 /**
- * Dograh Voice Widget
+ * Ivaqtech Voice Widget
  * Embeddable voice call widget for Dograh workflows
  * Version: 1.0.0
  */
@@ -13,7 +13,7 @@
     autoStart: false,
     apiBaseUrl: window.location.hostname === 'localhost'
       ? 'http://localhost:8000'
-      : 'https://api.dograh.com'
+      : 'https://api.ivaqtech.com'
   };
 
   // Widget state
@@ -307,7 +307,7 @@
   }
 
   /**
-   * Create headless widget (no UI — host page drives everything via window.DograhWidget API)
+   * Create headless widget (no UI — host page drives everything via window.IvaqtechWidget API)
    */
   function createHeadlessWidget() {
     const audio = document.createElement('audio');
@@ -977,7 +977,7 @@
   }
 
   // Public API
-  window.DograhWidget = {
+  window.IvaqtechWidget = {
     // Core methods
     init: init,
     start: startCall,
